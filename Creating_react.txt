@@ -1,0 +1,46 @@
+Creating a React project
+=================================
+
+---Creating project directory
+mkdir JustAChatbot
+
+----Changing directory
+cd JustAChatbot
+
+---Giving the project a name and selecting scripting language using npm
+npm create vite@4.1.0
+> npx
+> cva
+
+√ Project name: ... JUSTACHATBOT
+√ Select a framework: » React
+√ Select a variant: » JavaScript
+
+Scaffolding project in C:\Users\hareraaj_elango\JustAChatbot\JUSTACHATBOT...
+
+Done. Now run:
+
+  cd JustAChatbot
+  npm install
+  npm run dev
+  
+---Installing dependenices using npm
+C:\Users\hareraaj_elango\JustAChatbot\JUSTACHATBOT>npm install
+
+added 70 packages, and audited 71 packages in 14s
+
+7 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+---Opening the project in VS Code
+C:\Users\hareraaj_elango\JustAChatbot\JUSTACHATBOT>code .
+
+
+---installing react-chatbotify
+npm install react-chatbotify
+
+---installing axios
+npm install axios
+
