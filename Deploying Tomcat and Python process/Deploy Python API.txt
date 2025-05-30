@@ -1,0 +1,43 @@
+Deploying our Python api:
+==================================
+
+---switch to root
+sudo su
+
+---change directory to usr
+cd /usr/lib/systemd/systemd/
+
+---create a flaskapp service file
+touch flaskapp.service
+
+---open the file
+vi flaskapp.service
+
+---insert the below code in the file
+[Unit]
+Description=Gunicorn instance to serve FlaskApp
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/root
+ExecStart=/usr/bin/python3 /usr/local/bin/gunicorn --workers 1 --bind 0.0.0.0:5000 wsgi:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+---start the service
+sudo systemctl start flaskapp.service
+
+If the service is correctly started a symlink in created in the folder /etc/systemd/system/multi-user.target.wants/
+
+---enable the service to start automatically on bootup
+sudo systemctl enable flaskapp.service
+
+
+---check if the service is running
+sudo systemctl status flaskapp.service
+

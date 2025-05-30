@@ -1,0 +1,98 @@
+Installing Tomcat and deploying our application war file
+==========================================================
+
+Installing Tomcat
+=======================
+
+---Installing java
+sudo dnf install -y java
+
+---Checking Java version
+java --version
+
+--creating tomcat user
+sudo useradd -r tomcat
+
+--Downloading tomcat apache zip
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.97/bin/apache-tomcat-9.0.97.tar.gz
+
+
+---Extracting the zip
+sudo tar -xzvf apache-tomcat-9.0.97.tar.gz -C /opt/
+
+---Moving the zip extract to opt folder
+sudo mv /opt/apache-tomcat-9.0.97 /opt/tomcat
+
+---Change owner and permission for that file
+sudo chown -R tomcat: /opt/tomcat
+sudo chmod -R 755 /opt/tomcat
+
+---Create tomcat service
+sudo vi /etc/systemd/system/tomcat.service
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
+Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/tomcat
+Environment=CATALINA_BASE=/opt/tomcat
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+User=tomcat
+Group=tomcat
+UMask=0007
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+---Check JAVA_HOME and paste it in above tomcat.service file
+readlink -f $(which java)
+
+/usr/lib/jvm/java-22-amazon-corretto.x86_64
+
+---Reload properties
+sudo systemctl daemon-reload
+
+---enable the tomcat service to start on bootup
+sudo systemtctl enable tomcat.service
+
+---start the tomcat service now
+sudo systemtcl start tomcat.service
+
+---Check the tomcat service status
+sudo systemctl status tomcat.service
+
+
+
+
+
+
+
+Taking react and generating war file in eclipse and Deploying War:
+=====================================================================
+
+1. Create maven project with maven webapp archetype in eclipse
+
+2. Generate the build of react code from VS code using npm run build
+
+3. Copy the build and paste it in the webapps folder of our maven project in ecplise
+
+4. Run maven clean install to generate war file
+
+5. The war file is available in the eclipse project folder directory
+
+6. Upload the war file to aws s3 directory s3://billingbuild/
+
+7. Copy war file from s3 to webapps folder in the ec2 server using below command:
+aws s3 cp s3://billingbuild/chatbotweb-0.0.1-SNAPSHOT.war .
